@@ -1,5 +1,5 @@
 {
-  "name": "sales-demo",
+  "name": "marketplace",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,14 +9,31 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "next": "16.1.6",
+    "@floating-ui/react": "^0.27.16",
+    "@headlessui/react": "^2.2.9",
+    "axios": "^1.13.6",
+    "flowbite": "^4.0.1",
+    "flowbite-react": "^0.12.16",
+    "gsap": "^3.14.2",
+    "next": "^16.1.6",
+    "node": "^24.12.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "react-slick": "^0.31.0",
+    "rizzui": "^1.0.1",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/postcss": "^4",
+    "autoprefixer": "^10.4.23",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4"
+    "eslint-config-next": "16.1.1",
+    "postcss": "^8.5.6",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^3.4.19"
   }
 }
