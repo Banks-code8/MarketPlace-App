@@ -5,54 +5,102 @@ import { Drawer } from 'rizzui';
 import { RiMenu3Fill } from 'react-icons/ri';
 import { IoClose } from 'react-icons/io5';
 import Link from 'next/link';
+
 import MainButton from '../button/MainButton';
-import Navitem from '../typography/Navitem';
-import CartIcon from './CartIcon';
+import { useAuthStore } from '@/hooks/useAuth';
 
 export default function MobileNav() {
   const [drawerState, setDrawerState] = useState(false);
-  const menuz = [
-    { link: '/', title: 'Why  Us' },
-    { link: '/', title: 'About Us' },
-    { link: '/', title: 'Markets' },
-  ];
+
+  const { user, isAuthenticated, logout } = useAuthStore();
+
+  const closeDrawer = () => setDrawerState(false);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      closeDrawer();
+    }
+  };
+
   return (
     <>
-      <div onClick={() => setDrawerState(true)} className="block md:hidden">
-        <RiMenu3Fill size={40} />
-      </div>
+      {/* MENU BUTTON */}
+      <button onClick={() => setDrawerState(true)} className="block md:hidden">
+        <RiMenu3Fill size={34} />
+      </button>
+
+      {/* DRAWER */}
       <Drawer
         isOpen={drawerState}
-        onClose={() => setDrawerState(false)}
+        onClose={closeDrawer}
         placement="left"
         size="sm"
       >
-        <div
-          onClick={() => setDrawerState(false)}
-          className="flex min-h-full flex-col gap-8 bg-mainWhite"
-        >
-          <div className="flex justify-between border-b-2 px-[20px] py-[10px]">
-            <h1 className="text-[30px] font-bold leading-[30px] tracking-tight">
-              CnxtHub
-            </h1>
-            <IoClose size={40} />
+        <div className="flex min-h-full flex-col bg-white">
+          {/* HEADER */}
+          <div className="flex items-center justify-between border-b px-5 py-4">
+            <h1 className="text-xl font-bold">Authenticator</h1>
+
+            <button onClick={closeDrawer}>
+              <IoClose size={28} />
+            </button>
           </div>
-          <div className="flex flex-col gap-8 px-[20px] py-[10px]">
-            {/* menuz links */}
-            <div className="flex flex-col gap-8">
-              {menuz.map((item, index) => (
-                <Link key={index} href={item.link}>
-                  <Navitem text={item.title} />
+
+          {/* BODY */}
+          <div className="flex flex-col gap-4 p-5">
+            {/* NOT AUTHENTICATED */}
+            {!isAuthenticated && (
+              <Link href="/sign-up" onClick={closeDrawer}>
+                <MainButton
+                  text="Sign Up / Login"
+                  bgColor="bg-primary"
+                  textColor="text-white"
+                />
+              </Link>
+            )}
+
+            {/* AUTHENTICATED */}
+            {isAuthenticated && user && (
+              <>
+                <Link
+                  href="/dashboard"
+                  onClick={closeDrawer}
+                  className="py-2 text-sm font-medium"
+                >
+                  Dashboard
                 </Link>
-              ))}
-            </div>
-            {/* sign up */}
-            <Link href={'/'}>
-              {' '}
-              <MainButton text={'Register'} />{' '}
-            </Link>{' '}
-            <CartIcon />
-          </div>{' '}
+
+                {user.role === 'admin' && (
+                  <Link
+                    href="/admin"
+                    onClick={closeDrawer}
+                    className="py-2 text-sm font-medium"
+                  >
+                    Admin Panel
+                  </Link>
+                )}
+
+                <Link
+                  href="/profile"
+                  onClick={closeDrawer}
+                  className="py-2 text-sm font-medium"
+                >
+                  Profile
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="py-2 text-left text-sm font-medium text-red-500"
+                >
+                  Logout
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </Drawer>
     </>

@@ -1,8 +1,8 @@
 import MainHero from '@/components/hero/MainHero';
 
 export const metadata = {
-  title: 'Welcome to Cnxt',
-  description: 'Connect and Collaborate Seamlessly with Cnxt',
+  title: 'Authenticator Features',
+  description: 'Ecommerces Authenticator features',
 };
 export default function Home() {
   return (

@@ -1,46 +1,78 @@
-import Link from 'next/link';
-import React from 'react';
-import MainButton from '../button/MainButton';
-import Navitem from '../typography/Navitem';
-import MobileNav from './MobileNav';
-import SearchBar from '../forms/SearchBar';
-import MainHero from '../hero/MainHero';
-import CartIcon from './CartIcon';
-import LoginIcon from './LoginIcon';
+'use client';
 
-const Headers = () => {
-  const navigations = [
-    { link: '/', title: 'Why  Us' },
-    { link: '/', title: 'About Us' },
-    { link: '/', title: 'Blog' },
-  ];
+import React, { useEffect } from 'react';
+import Link from 'next/link';
+import MainButton from '../button/MainButton';
+import MobileNav from './MobileNav';
+import { useAuthStore } from '@/hooks/useAuth';
+
+const Header = () => {
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const initialized = useAuthStore((state) => state.initialized);
+  const getUserData = useAuthStore((state) => state.getUserData);
+  const logout = useAuthStore((state) => state.logout);
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  if (!initialized) {
+    return null; // or a loading skeleton
+  }
+
+  const initials =
+    user?.fullName
+      ?.split(' ')
+      .map((name) => name[0])
+      .join('')
+      .toUpperCase() || '';
+
+  const isAdmin = user?.role === 'admin';
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
-    <header className="">
-      <div className="flex w-full items-center justify-between gap-4 bg-black bg-transparent/5 px-[6vw] py-[4vh] shadow-lg backdrop-blur-[10px]">
-        {' '}
-        {/* logo */}
-        <Link href={'/'}>
-          <h1 className="text-[30px] font-bold leading-[30px] tracking-tight">
-            CnxtHub
-          </h1>
+    <header className="relative z-50">
+      <div className="flex items-center justify-between bg-black/5 px-[6vw] py-[4vh] shadow-lg backdrop-blur-lg">
+        {/* Logo */}
+        <Link href="/">
+          <h1 className="text-[28px] font-bold tracking-tight">Marketplace</h1>
         </Link>
-        {/* navigation */}
-        <div className="hidden gap-8 md:flex md:justify-center">
-          {navigations.map((item, index) => (
-            <Link key={index} href={item.link}>
-              <Navitem text={item.title} />
+
+        {/* Right Side */}
+        <div className="flex items-center gap-4">
+          {!isAuthenticated ? (
+            <Link href="/sign-up">
+              <MainButton text="Sign Up / Login" />
             </Link>
-          ))}
-        </div>
-        <div className="flex justify-end gap-4">
-          <LoginIcon />
-          <CartIcon />
-          <SearchBar />
-          <Link href={'/signUp'} className="hidden md:block">
-            {' '}
-            <MainButton text={'SignUp | Login'} bgColor={'bg-mainWhite'} />{' '}
-          </Link>
-          {/* mobile nav */}
+          ) : (
+            <div className="flex items-center gap-4">
+              {isAdmin && (
+                <Link href="/dashboard">
+                  <MainButton text="Dashboard" />
+                </Link>
+              )}
+
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-semibold text-white">
+                {initials}
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="rounded-md bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+
           <MobileNav />
         </div>
       </div>
@@ -48,4 +80,4 @@ const Headers = () => {
   );
 };
 
-export default Headers;
+export default Header;
