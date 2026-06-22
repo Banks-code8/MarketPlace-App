@@ -5,6 +5,7 @@ import Link from 'next/link';
 import MainButton from '../button/MainButton';
 import MobileNav from './MobileNav';
 import { useAuthStore } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
@@ -12,7 +13,7 @@ const Header = () => {
   const initialized = useAuthStore((state) => state.initialized);
   const getUserData = useAuthStore((state) => state.getUserData);
   const logout = useAuthStore((state) => state.logout);
-
+  const router = useRouter();
   useEffect(() => {
     getUserData();
   }, []);
@@ -49,8 +50,8 @@ const Header = () => {
         {/* Right Side */}
         <div className="flex items-center gap-4">
           {!isAuthenticated ? (
-            <Link href="/sign-up">
-              <MainButton text="Sign Up / Login" />
+            <Link href="/login">
+              <MainButton text="Sign In" />
             </Link>
           ) : (
             <div className="flex items-center gap-4">
@@ -59,10 +60,16 @@ const Header = () => {
                   <MainButton text="Dashboard" />
                 </Link>
               )}
-
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-semibold text-white">
                 {initials}
               </div>
+              <Link href="/upload">
+                <MainButton
+                  text="Sell Now"
+                  bgColor={'bg-primary'}
+                  textColor={'text-white'}
+                />
+              </Link>
 
               <button
                 onClick={handleLogout}

@@ -3,6 +3,7 @@ import './globals.css';
 import Headers from '@/components/partials/Headers';
 import { Toaster } from 'react-hot-toast';
 import 'flowbite';
+import Footer from '@/components/partials/Footer';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
       <body className={`${lato.variable} overflow-x-hidden`}>
         <Headers />
         <main>{children}</main>
-
+        <Footer />
         <Toaster position="top-center" />
       </body>
     </html>
