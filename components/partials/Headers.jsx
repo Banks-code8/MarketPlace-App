@@ -8,6 +8,8 @@ import { useAuthStore } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import SearchForm from '../form/SearchForm';
 import { RiHeartLine, RiShoppingCart2Line } from 'react-icons/ri';
+import CartIcon from '../icon/CartIcon';
+import WishlistIcon from '../icon/WishlistIcon';
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
@@ -68,15 +70,15 @@ const Header = () => {
                   <MainButton text="Dashboard" />
                 </Link>
               )}
-
               <Link href={'/wishlist'}>
                 {' '}
-                <RiHeartLine size={40} />
+                <WishlistIcon />{' '}
               </Link>
               <Link href={'/cart'}>
                 {' '}
-                <RiShoppingCart2Line size={40} />
+                <CartIcon />{' '}
               </Link>
+
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-semibold text-white">
                 {initials}
               </div>

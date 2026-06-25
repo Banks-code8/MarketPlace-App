@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import 'flowbite';
 import Footer from '@/components/partials/Footer';
 import { WishlistProvider } from '@/context/WishListContext';
+import { CartProvider } from '@/context/CartContext';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -16,12 +17,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${lato.variable} overflow-x-hidden`}>
-        <Headers />
-        <main>
+        <CartProvider>
           {' '}
-          <WishlistProvider>{children}</WishlistProvider>
-        </main>
-        <Footer />
+          <WishlistProvider>
+            {' '}
+            <Headers />
+            <main> {children}</main>
+            <Footer />
+          </WishlistProvider>
+        </CartProvider>
         <Toaster position="top-center" />
       </body>
     </html>

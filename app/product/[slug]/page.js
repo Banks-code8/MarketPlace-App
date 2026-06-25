@@ -5,6 +5,7 @@ import PageBorders from '@/components/wrappers/PageBorders';
 import Image from 'next/image';
 import MainText from '@/components/typography/MainText';
 import WishListButton from '@/components/button/WishListButton';
+import AddToCartButton from '@/components/button/AddToCartButton';
 
 export const metadata = {
   title: 'Marketplace',
@@ -56,6 +57,7 @@ export default async function ProductPage({ params }) {
                       ? product.discountPrice
                       : product.price}
                   </p>
+                  <AddToCartButton product={product} />
                 </div>
               </div>
             </div>
