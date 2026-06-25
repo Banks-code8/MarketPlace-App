@@ -1,47 +1,32 @@
 'use client';
 
-import Link from 'next/link';
+import Image from 'next/image';
 
-import MainText from '../typography/MainText';
-import ImageWrapper from '../wrappers/ImageWrapper';
-import RatingItems from '@/components/sections/RatingItems';
-
-const MainCard = ({ products = [] }) => {
-  if (!products.length) {
-    return <div className="py-10 text-center">No products found.</div>;
-  }
-
+const MainCard = ({ image, title, subtitle, cost, className = '' }) => {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-      {products.map((product) => (
-        <Link
-          key={product._id}
-          href={`/product/${product.slug}`}
-          className="overflow-hidden rounded-[10px] shadow-custom-primary transition hover:scale-[1.02]"
-        >
-          <ImageWrapper
-            src={product.images?.[0]?.url || '/placeholder.png'}
-            alt={product.name || 'Product image'}
-            width={300}
-            height={300}
-            styles="h-[250px] w-full object-cover"
-          />
+    <div
+      className={`h-full overflow-hidden rounded-[10px] bg-lightestBlue shadow-custom-primary transition-all duration-300 hover:scale-105 active:scale-95 ${className}`}
+    >
+      <div className="w-full bg-white">
+        <Image
+          src={image || '/placeholder-product.jpg'}
+          alt={title || 'Product'}
+          width={300}
+          height={200}
+          className="bg-no-repeat object-cover object-center"
+        />
+      </div>
 
-          <div className="flex flex-col gap-2 p-4">
-            <MainText text={product.name} />
+      <div className="flex flex-col gap-2 p-4">
+        <h3 className="leading-[24px ] line-clamp-2 text-[18px] font-semibold">
+          {title}
+        </h3>
+        <p className="text-sm text-gray-500">{subtitle}</p>
 
-            {product.brand && (
-              <MainText text={product.brand} color="text-mainGray" />
-            )}
-
-            <span className="font-semibold">
-              ₦ {product.price?.toLocaleString()}
-            </span>
-
-            <RatingItems rating={product.rating} reviews={product.numReviews} />
-          </div>
-        </Link>
-      ))}
+        <p className="text-[16px] font-bold">
+          ${Number(cost || 0).toLocaleString()}
+        </p>
+      </div>
     </div>
   );
 };

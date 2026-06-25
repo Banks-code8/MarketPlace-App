@@ -1,32 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import HeaderOne from '@/components/typography/HeaderOne';
+import ProductGrid from '@/components/sections/ProductGrid';
 
-import { getRelatedProducts } from '@/services/productService';
+const RelatedItems = ({ products = [], category }) => {
+  const relatedProducts = products
+    .filter((product) => product.category === category)
+    .slice(0, 4);
 
-import MainCard from '@/components/cards/MainCard';
-
-const RelatedItems = ({ slug }) => {
-  const [products, setProducts] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchRelated = async () => {
-      const res = await getRelatedProducts(slug);
-
-      if (res.success) {
-        setProducts(res.data?.data || []);
-      }
-
-      setLoading(false);
-    };
-
-    fetchRelated();
-  }, [slug]);
+  if (!category || relatedProducts.length === 0) {
+    return null;
+  }
 
   return (
-    <div>{loading ? <p>Loading...</p> : <MainCard products={products} />}</div>
+    <section className="flex flex-col gap-4">
+      <HeaderOne text="Recommended" />
+
+      <ProductGrid products={relatedProducts} />
+    </section>
   );
 };
 

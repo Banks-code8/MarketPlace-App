@@ -1,9 +1,9 @@
 import React from 'react';
 
-const TitleText = ({ text, textCenter }) => {
+const TitleText = ({ color, text, textCenter }) => {
   return (
     <h3
-      className={` ${textCenter ? 'text-center' : 'text-left'} text-[18px] font-semibold leading-[18px] tracking-normal text-mainBlack md:text-[24px] md:leading-[24px]`}
+      className={`${color ? color : 'text-mainBlack'} ${textCenter ? 'text-center' : 'text-left'} text-[18px] font-normal leading-[18px] tracking-normal text-mainBlack md:text-[24px] md:leading-[24px]`}
     >
       {text}
     </h3>

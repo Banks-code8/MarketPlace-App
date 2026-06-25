@@ -1,8 +1,6 @@
 import MainHero from '@/components/hero/MainHero';
-import CategoryItems from '@/components/sections/CategoryItems';
-import FilterItems from '@/components/sections/FilterItems';
-import RelatedItems from '@/components/sections/RelatedItems';
-import FilterWrapper from '@/components/wrappers/FilterWrapper';
+import CatalogueItems from '@/components/sections/CatalogueItems';
+import PageBorders from '@/components/wrappers/PageBorders';
 
 export const metadata = {
   title: 'Marketplace',
@@ -13,9 +11,9 @@ export default function Home() {
     <div className="">
       {' '}
       <MainHero />
-      <CategoryItems />
-      <FilterWrapper />
-      <RelatedItems />
+      <PageBorders>
+        <CatalogueItems />
+      </PageBorders>
     </div>
   );
 }

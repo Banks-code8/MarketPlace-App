@@ -92,12 +92,22 @@ export default function MobileNav() {
                   Profile
                 </Link>
 
-                <button
-                  onClick={handleLogout}
-                  className="py-2 text-left text-sm font-medium text-red-500"
-                >
-                  Logout
-                </button>
+                <div className="flex flex-col gap-8">
+                  <Link href="/upload">
+                    <MainButton
+                      text="Sell Now"
+                      bgColor={'bg-primary'}
+                      textColor={'text-white'}
+                    />
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="rounded-md bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+                  >
+                    Logout
+                  </button>
+                </div>
               </>
             )}
           </div>

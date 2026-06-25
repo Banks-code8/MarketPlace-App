@@ -7,7 +7,6 @@ const FilterItems = ({ onFilter }) => {
   const [open, setOpen] = useState(false);
 
   const [filters, setFilters] = useState({
-    category: '',
     brand: '',
     minPrice: '',
     maxPrice: '',
@@ -15,47 +14,24 @@ const FilterItems = ({ onFilter }) => {
   });
 
   const handleChange = (e) => {
-    setFilters({
-      ...filters,
+    setFilters((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const applyFilter = () => {
-    onFilter(filters);
-    setOpen(false);
+    }));
   };
 
   return (
     <div className="relative">
-      {/* Filter Button */}
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 rounded-[10px] border px-4 py-2"
       >
-        <FiFilter size={20} />
+        <FiFilter />
         Filter
       </button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-3 flex w-[280px] flex-col gap-4 rounded-[10px] bg-white p-5 shadow-custom-primary">
-          {/* Category */}
-          <select
-            name="category"
-            value={filters.category}
-            onChange={handleChange}
-            className="rounded border p-2"
-          >
-            <option value="">All Categories</option>
-
-            <option value="phones">Phones</option>
-
-            <option value="fashion">Fashion</option>
-
-            <option value="computers">Computers</option>
-          </select>
-
-          {/* Brand */}
+        <div className="absolute right-0 z-20 mt-2 flex w-[280px] flex-col gap-3 rounded-[10px] bg-white p-4 shadow-lg">
           <input
             name="brand"
             value={filters.brand}
@@ -64,27 +40,24 @@ const FilterItems = ({ onFilter }) => {
             className="rounded border p-2"
           />
 
-          {/* Min Price */}
           <input
             type="number"
             name="minPrice"
             value={filters.minPrice}
             onChange={handleChange}
-            placeholder="Min price"
+            placeholder="Min Price"
             className="rounded border p-2"
           />
 
-          {/* Max Price */}
           <input
             type="number"
             name="maxPrice"
             value={filters.maxPrice}
             onChange={handleChange}
-            placeholder="Max price"
+            placeholder="Max Price"
             className="rounded border p-2"
           />
 
-          {/* Sort */}
           <select
             name="sort"
             value={filters.sort}
@@ -92,17 +65,17 @@ const FilterItems = ({ onFilter }) => {
             className="rounded border p-2"
           >
             <option value="">Sort</option>
-
             <option value="-createdAt">Newest</option>
-
-            <option value="price">Price low</option>
-
-            <option value="-price">Price high</option>
+            <option value="price">Price Low</option>
+            <option value="-price">Price High</option>
           </select>
 
           <button
-            onClick={applyFilter}
-            className="rounded bg-black px-4 py-2 text-white"
+            onClick={() => {
+              onFilter(filters);
+              setOpen(false);
+            }}
+            className="rounded bg-black py-2 text-white"
           >
             Apply
           </button>

@@ -6,6 +6,7 @@ import MainButton from '../button/MainButton';
 import MobileNav from './MobileNav';
 import { useAuthStore } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import SearchForm from '../form/SearchForm';
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
@@ -43,8 +44,11 @@ const Header = () => {
     <header className="relative z-50">
       <div className="flex items-center justify-between bg-black/5 px-[6vw] py-[4vh] shadow-lg backdrop-blur-lg">
         {/* Logo */}
-        <Link href="/">
+        <Link href="/" className="hidden md:block">
           <h1 className="text-[28px] font-bold tracking-tight">Marketplace</h1>
+        </Link>
+        <Link href="/" className="block md:hidden">
+          <h1 className="text-[28px] font-bold tracking-tight">MP</h1>
         </Link>
 
         {/* Right Side */}
@@ -63,25 +67,34 @@ const Header = () => {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-semibold text-white">
                 {initials}
               </div>
-              <Link href="/upload">
-                <MainButton
-                  text="Sell Now"
-                  bgColor={'bg-primary'}
-                  textColor={'text-white'}
-                />
-              </Link>
+              <div className="hidden gap-8 md:flex">
+                <Link href="/upload">
+                  <MainButton
+                    text="Sell Now"
+                    bgColor={'bg-primary'}
+                    textColor={'text-white'}
+                  />
+                </Link>
 
-              <button
-                onClick={handleLogout}
-                className="rounded-md bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
-              >
-                Logout
-              </button>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-md bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           )}
-
+          <div className="hidden md:block">
+            {' '}
+            <SearchForm />
+          </div>
           <MobileNav />
         </div>
+      </div>{' '}
+      <div className="block p-[10px] md:hidden">
+        {' '}
+        <SearchForm />
       </div>
     </header>
   );
