@@ -4,6 +4,7 @@ import Headers from '@/components/partials/Headers';
 import { Toaster } from 'react-hot-toast';
 import 'flowbite';
 import Footer from '@/components/partials/Footer';
+import { WishlistProvider } from '@/context/WishListContext';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -16,7 +17,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lato.variable} overflow-x-hidden`}>
         <Headers />
-        <main>{children}</main>
+        <main>
+          {' '}
+          <WishlistProvider>{children}</WishlistProvider>
+        </main>
         <Footer />
         <Toaster position="top-center" />
       </body>

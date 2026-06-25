@@ -38,7 +38,7 @@ const SearchForm = () => {
     <div className="relative">
       <form
         onSubmit={handleSubmit(submit)}
-        className="rounded-[5px] border border-mainGray bg-white pr-[4px]"
+        className="w-full rounded-[5px] border border-mainGray bg-white pr-[4px]"
       >
         <div className="flex items-center gap-3">
           <input

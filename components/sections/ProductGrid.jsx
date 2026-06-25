@@ -11,6 +11,7 @@ const ProductGrid = ({ products = [] }) => {
           <MainCard
             image={product.images?.[0]?.url}
             title={product.name}
+            product={product}
             subtitle={product.category}
             cost={
               product.discountPrice > 0 ? product.discountPrice : product.price
