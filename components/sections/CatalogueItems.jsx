@@ -8,7 +8,6 @@ import ProductGrid from '@/components/sections/ProductGrid';
 
 import CategoryItems from './CategoryItems';
 import FilterItems from './FilterItems';
-import RelatedItems from './RelatedItems';
 
 const CatalogueItems = () => {
   const { products = [], loading } = useProducts();
@@ -40,8 +39,7 @@ const CatalogueItems = () => {
   if (loading) {
     return <div className="py-10 text-center">Loading products...</div>;
   }
-  console.log(products);
-  console.log(filteredProducts);
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-start gap-4 md:justify-between">
@@ -51,8 +49,6 @@ const CatalogueItems = () => {
       </div>
 
       <ProductGrid products={filteredProducts} />
-
-      <RelatedItems products={products} category={category} />
     </div>
   );
 };

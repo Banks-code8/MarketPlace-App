@@ -1,9 +1,9 @@
 import React from 'react';
 
-const MainText = ({ color, text, textCenter }) => {
+const MainText = ({ color, text, textCenter, textSize }) => {
   return (
     <p
-      className={`${color ? color : 'text-mainBlack'} ${textCenter ? 'text-center' : 'text-left'} text-[14px] font-normal leading-[24px] tracking-normal md:text-[16px]`}
+      className={`${color ? color : 'text-mainBlack'} ${textCenter ? 'text-center' : 'text-left'} ${textSize ? textSize : 'text-[14px]'} font-normal leading-[24px] tracking-normal md:text-[16px]`}
     >
       {text}
     </p>

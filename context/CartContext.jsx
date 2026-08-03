@@ -3,85 +3,145 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import {
+  getCart,
+  addToCart as addToCartService,
+  updateCartItem,
+  removeFromCart as removeFromCartService,
+} from '@/services/cartService';
+
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load cart
-  useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
+  // =====================
+  // FETCH CART
+  // =====================
 
-    if (storedCart) {
-      try {
-        setCart(JSON.parse(storedCart));
-      } catch {
+  const fetchCart = async () => {
+    try {
+      setLoading(true);
+
+      const res = await getCart();
+
+      if (!res.success) {
         setCart([]);
+        return;
       }
+
+      setCart(res.data.data.items ?? []);
+    } catch (error) {
+      console.error(error);
+      setCart([]);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchCart();
   }, []);
 
-  // Save cart
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+  // =====================
+  // ADD TO CART
+  // =====================
 
-  // Add to cart
-  const addToCart = (product) => {
-    const exists = cart.find((item) => item._id === product._id);
+  const addToCart = async (productId) => {
+    const res = await addToCartService(productId, 1);
 
-    if (exists) {
-      increaseQty(product._id);
+    if (!res.success) {
+      toast.error(res.message);
       return;
     }
 
-    setCart((prev) => [...prev, { ...product, quantity: 1 }]);
+    setCart(res.data?.data.items || []);
+
     toast.success('Product added to cart');
   };
 
-  // Increase quantity
-  const increaseQty = (_id) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item._id === _id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  // =====================
+  // INCREASE QUANTITY
+  // =====================
 
-    toast.success('Quantity increased');
+  const increaseQty = async (productId) => {
+    const item = cart.find((item) => item.productId._id === productId);
+
+    if (!item) return;
+
+    const res = await updateCartItem(productId, item.quantity + 1);
+
+    if (!res.success) {
+      toast.error(res.message);
+      return;
+    }
+
+    setCart(res.data.data.items ?? []);
   };
 
-  // Decrease quantity
-  const decreaseQty = (_id) => {
-    setCart((prev) =>
-      prev
-        .map((item) =>
-          item._id === _id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
+  // =====================
+  // DECREASE QUANTITY
+  // =====================
 
-    toast.success('Quantity decreased');
+  const decreaseQty = async (productId) => {
+    const item = cart.find((item) => item.productId._id === productId);
+
+    if (!item) return;
+
+    if (item.quantity === 1) {
+      return removeItem(productId);
+    }
+
+    const res = await updateCartItem(productId, item.quantity - 1);
+
+    if (!res.success) {
+      toast.error(res.message);
+      return;
+    }
+
+    setCart(res.data.data.items ?? []);
   };
 
-  // Remove one product
-  const removeItem = (_id) => {
-    setCart((prev) => prev.filter((item) => item._id !== _id));
+  // =====================
+  // REMOVE ITEM
+  // =====================
 
-    toast.error('Product removed');
+  const removeItem = async (productId) => {
+    const res = await removeFromCartService(productId);
+
+    if (!res.success) {
+      toast.error(res.message);
+      return;
+    }
+
+    setCart(res.data.data.items ?? []);
+    toast.success('Item removed');
   };
 
-  // Clear cart
+  // =====================
+  // CLEAR CART
+  // =====================
+
   const clearCart = () => {
     setCart([]);
-    toast.success('Cart cleared');
   };
 
-  // Total items
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  // =====================
+  // TOTALS
+  // =====================
 
-  // Total price
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   const total = cart.reduce(
-    (sum, item) => sum + Number(item.price) * item.quantity,
+    (sum, item) =>
+      sum +
+      Number(
+        item.productId?.discountPrice ??
+          item.productId?.price ??
+          item.priceAtAdd
+      ) *
+        item.quantity,
     0
   );
 
@@ -89,6 +149,8 @@ export function CartProvider({ children }) {
     <CartContext.Provider
       value={{
         cart,
+        loading,
+        fetchCart,
         addToCart,
         increaseQty,
         decreaseQty,

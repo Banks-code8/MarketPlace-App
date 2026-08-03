@@ -46,3 +46,46 @@ export const postData = async (url, body = {}, config = {}) => {
     };
   }
 };
+
+export const patchData = async (url, body = {}, config = {}) => {
+  try {
+    const res = await axios.patch(`${API_URL}${url}`, body, {
+      withCredentials: true,
+      ...config,
+    });
+
+    return {
+      success: true,
+      data: res.data,
+      message: res.data?.message || null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error.response?.data?.message || 'Request failed',
+      status: error.response?.status,
+    };
+  }
+};
+export const deleteData = async (url, config = {}) => {
+  try {
+    const res = await axios.delete(`${API_URL}${url}`, {
+      withCredentials: true,
+      ...config,
+    });
+
+    return {
+      success: true,
+      data: res.data,
+      message: res.data?.message || null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error.response?.data?.message || 'Request failed',
+      status: error.response?.status,
+    };
+  }
+};

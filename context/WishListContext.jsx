@@ -1,6 +1,67 @@
+// 'use client';
+
+// import { createContext, useContext, useEffect, useState } from 'react';
+
+// const WishlistContext = createContext();
+
+// export const useWishlist = () => useContext(WishlistContext);
+
+// export const WishlistProvider = ({ children }) => {
+//   const [wishlist, setWishlist] = useState([]);
+
+//   useEffect(() => {
+//     const saved = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+//     setWishlist(saved);
+//   }, []);
+
+//   const addToWishlist = (product) => {
+//     const exists = wishlist.some((item) => item._id === product._id);
+
+//     if (exists) return;
+
+//     const updated = [...wishlist, product];
+
+//     setWishlist(updated);
+
+//     localStorage.setItem('wishlist', JSON.stringify(updated));
+//   };
+
+//   const removeFromWishlist = (id) => {
+//     const updated = wishlist.filter((item) => item._id !== id);
+
+//     setWishlist(updated);
+
+//     localStorage.setItem('wishlist', JSON.stringify(updated));
+//   };
+
+//   const isWishlisted = (id) => {
+//     return wishlist.some((item) => item._id === id);
+//   };
+
+//   return (
+//     <WishlistContext.Provider
+//       value={{
+//         wishlist,
+//         addToWishlist,
+//         removeFromWishlist,
+//         isWishlisted,
+//       }}
+//     >
+//       {children}
+//     </WishlistContext.Provider>
+//   );
+// };
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
+import {
+  getWishlist,
+  addToWishlist as addToWishlistService,
+  removeFromWishlist as removeFromWishlistService,
+} from '@/services/wishlistService';
 
 const WishlistContext = createContext();
 
@@ -8,44 +69,89 @@ export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // ======================
+  // FETCH WISHLIST
+  // ======================
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('wishlist')) || [];
-
-    setWishlist(saved);
+    console.log('Wishlist useEffect');
+    fetchWishlist();
   }, []);
 
-  const addToWishlist = (product) => {
-    const exists = wishlist.some((item) => item._id === product._id);
+  const fetchWishlist = async () => {
+    console.log('fetchWishlist started');
 
-    if (exists) return;
+    try {
+      setLoading(true);
 
-    const updated = [...wishlist, product];
+      const res = await getWishlist();
 
-    setWishlist(updated);
+      console.log('After getWishlist');
+      console.log(res);
 
-    localStorage.setItem('wishlist', JSON.stringify(updated));
+      if (!res.success) {
+        setWishlist([]);
+        return;
+      }
+
+      setWishlist(res.data?.data?.items ?? []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // ======================
+  // ADD TO WISHLIST
+  // ======================
+
+  const addToWishlist = async (productId) => {
+    const res = await addToWishlistService(productId);
+
+    if (!res.success) {
+      toast.error(res.message);
+      return;
+    }
+
+    setWishlist(res.data.data.items ?? []);
+    toast.success('Added to wishlist');
   };
 
-  const removeFromWishlist = (id) => {
-    const updated = wishlist.filter((item) => item._id !== id);
+  // ======================
+  // REMOVE FROM WISHLIST
+  // ======================
 
-    setWishlist(updated);
+  const removeFromWishlist = async (productId) => {
+    const res = await removeFromWishlistService(productId);
 
-    localStorage.setItem('wishlist', JSON.stringify(updated));
+    if (!res.success) {
+      toast.error(res.message);
+      return;
+    }
+
+    setWishlist(res.data.data.items ?? []);
+    toast.success('Removed from wishlist');
   };
 
-  const isWishlisted = (id) => {
-    return wishlist.some((item) => item._id === id);
+  // ======================
+  // CHECK IF PRODUCT EXISTS
+  // ======================
+
+  const isWishlisted = (productId) => {
+    return wishlist.some((item) => item.productId?._id === productId);
   };
 
   return (
     <WishlistContext.Provider
       value={{
         wishlist,
+        loading,
+        fetchWishlist,
         addToWishlist,
         removeFromWishlist,
         isWishlisted,
+        wishlistCount: wishlist.length,
       }}
     >
       {children}

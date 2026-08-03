@@ -11,6 +11,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
     "@headlessui/react": "^2.2.9",
+    "@paystack/inline-js": "^2.23.1",
     "axios": "^1.13.6",
     "flowbite": "^4.0.1",
     "flowbite-react": "^0.12.16",

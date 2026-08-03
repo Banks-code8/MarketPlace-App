@@ -7,7 +7,6 @@ import MobileNav from './MobileNav';
 import { useAuthStore } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import SearchForm from '../form/SearchForm';
-import { RiHeartLine, RiShoppingCart2Line } from 'react-icons/ri';
 import CartIcon from '../icon/CartIcon';
 import WishlistIcon from '../icon/WishlistIcon';
 
