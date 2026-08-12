@@ -1,4 +1,4 @@
-import DoublePageBorders from '@/components/Wrappers/DoublePageBorders';
+import DoublePageBorders from '@/components/wrappers/DoublePageBorders';
 import SignUpForm from '@/components/form/SignUpForm';
 
 export const metadata = {
