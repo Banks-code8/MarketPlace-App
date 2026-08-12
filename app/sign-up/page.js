@@ -1,5 +1,5 @@
-import DoublePageBorders from '@/components/wrappers/DoublePageBorders';
 import SignUpForm from '@/components/form/SignUpForm';
+import DoublePageBorders from '@/components/wrappers/DoublePageBorders';
 
 export const metadata = {
   title: 'Mask HR',
@@ -12,7 +12,7 @@ export default function Home() {
       <DoublePageBorders>
         {' '}
         <SignUpForm />
-      </DoublePageBorders>{' '}
+      </DoublePageBorders>
     </div>
   );
 }

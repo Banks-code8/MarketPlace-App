@@ -55,13 +55,10 @@ const CheckoutForm = () => {
 
       const order = orderResponse.data.data;
 
-      console.log('Order:', order);
-      console.log('Order ID:', order?._id);
-
       // Initialize Payment
       const paymentResponse = await initializePayment(order._id);
 
-     if (!paymentResponse.success) {
+      if (!paymentResponse.success) {
         return toast.error(paymentResponse.message);
       }
 
