@@ -10,8 +10,9 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <DoublePageBorders>
+        {' '}
         <SignUpForm />
-      </DoublePageBorders>
+      </DoublePageBorders>{' '}
     </div>
   );
 }
