@@ -61,50 +61,17 @@ const CheckoutForm = () => {
       // Initialize Payment
       const paymentResponse = await initializePayment(order._id);
 
-      if (!paymentResponse.success) {
+     if (!paymentResponse.success) {
         return toast.error(paymentResponse.message);
       }
 
-      const { access_code, reference } = paymentResponse.data;
+      const { authorization_url } = paymentResponse.data.data;
 
-      // Load Paystack only on the client
-      const { default: PaystackPop } = await import('@paystack/inline-js');
+      if (!authorization_url) {
+        return toast.error('Payment URL was not generated.');
+      }
 
-      const popup = new PaystackPop();
-
-      popup.newTransaction({
-        accessCode: access_code,
-
-        onSuccess: async (transaction) => {
-          try {
-            const verify = await verifyPayment(
-              transaction.reference || reference
-            );
-
-            if (!verify.success) {
-              return toast.error(verify.message);
-            }
-
-            toast.success('Payment successful!');
-
-            reset();
-
-            router.push(`/orders/${order._id}`);
-          } catch (error) {
-            console.error(error);
-            toast.error('Unable to verify payment.');
-          }
-        },
-
-        onCancel: () => {
-          toast('Payment cancelled.');
-        },
-
-        onError: (error) => {
-          console.error(error);
-          toast.error('Payment failed.');
-        },
-      });
+      window.location.href = authorization_url;
     } catch (error) {
       console.error(error);
 
