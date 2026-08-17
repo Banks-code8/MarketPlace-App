@@ -49,7 +49,7 @@ const SignUpForm = () => {
   };
 
   const handleGoogleAuth = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/oauth/google`;
   };
 
   return (

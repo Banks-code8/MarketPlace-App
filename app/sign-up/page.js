@@ -2,8 +2,8 @@ import SignUpForm from '@/components/form/SignUpForm';
 import DoublePageBorders from '@/components/wrappers/DoublePageBorders';
 
 export const metadata = {
-  title: 'Mask HR',
-  description: 'Sign-Up to Mask HR',
+  title: 'Marketplace Sign-up',
+  description: 'Sign-Up to Marketplace',
 };
 
 export default function Home() {

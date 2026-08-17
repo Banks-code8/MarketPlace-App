@@ -92,12 +92,16 @@ export const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       await logoutUser();
+    } catch (error) {
+      console.error('Logout error:', error);
     } finally {
       set({
         user: null,
         isAuthenticated: false,
         initialized: true,
       });
+
+      window.location.href = '/';
     }
   },
 }));

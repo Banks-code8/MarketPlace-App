@@ -2,8 +2,8 @@ import LoginForm from '@/components/form/LoginForm';
 import DoublePageBorders from '@/components/wrappers/DoublePageBorders';
 
 export const metadata = {
-  title: 'Mask HR',
-  description: 'Login to Mask HR',
+  title: 'Marketplace Login',
+  description: 'Login to Marketplace',
 };
 
 export default function Home() {

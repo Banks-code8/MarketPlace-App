@@ -8,8 +8,8 @@ import RelatedItems from '@/components/sections/RelatedItems';
 import PageBorders from '@/components/wrappers/PageBorders';
 
 export const metadata = {
-  title: 'Marketplace',
-  description: 'Welcome to Marketplace',
+  title: 'Marketplace Product',
+  description: 'Purchase your Marketplace product',
 };
 
 export default async function ProductPage({ params }) {

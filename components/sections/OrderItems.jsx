@@ -24,7 +24,7 @@ const OrderItems = () => {
         const image = product.images?.[0]?.url || '/placeholder-product.jpg';
 
         const price = Number(
-          product.discountPrice ?? product.price ?? item.priceAtAdd ?? 0
+          product.effectivePrice ?? product.price ?? item.priceAtAdd ?? 0
         );
 
         return (
